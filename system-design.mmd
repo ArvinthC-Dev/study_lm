@@ -15,8 +15,8 @@ flowchart TB
     H2[POST /jobs/transcribe]
     H3[POST /jobs/transcribe-collection]
     H4[GET /jobs]
-    H5[GET /jobs/{job_id}]
-    H6[DELETE /jobs/{job_id}]
+    H5["GET /jobs/{job_id}"]
+    H6["DELETE /jobs/{job_id}"]
   end
 
   subgraph CORE[Service Layer - TranscriptionService]
@@ -37,7 +37,7 @@ flowchart TB
   end
 
   subgraph Storage[Runtime Data Root (outside repo)]
-    JobsDir[jobs/<job_id>/]
+    JobsDir["jobs/<job_id>/"]
     MetaFile[metadata.json]
     AudioWav[audio.wav]
     Transcript[transcript.txt]
