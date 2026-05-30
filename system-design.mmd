@@ -26,14 +26,14 @@ flowchart TB
     Worker[Background Worker Thread]
     RunJob[_run_job]
     Audio[ffmpeg audio extraction]
-    ProviderChain[Provider chain resolver\nlocal | openai | auto]
+    ProviderChain["Provider chain resolver\nlocal | openai | auto"]
     Preflight[Provider preflight\n(binary/model/key checks)]
     Meta[(metadata.json per job)]
   end
 
   subgraph Providers[Transcription Providers]
-    Local[LocalWhisperCppProvider\nwhisper-cli + ggml model]
-    OpenAI[OpenAIWhisperProvider\nOpenAI API]
+    Local["LocalWhisperCppProvider\nwhisper-cli + ggml model"]
+    OpenAI["OpenAIWhisperProvider\nOpenAI API"]
   end
 
   subgraph Storage[Runtime Data Root (outside repo)]
