@@ -1,51 +1,51 @@
 flowchart TB
   %% vidLM AI - System Design
 
-  User[User]
+  User["User"]
 
-  subgraph FE[Frontend - React + TypeScript + Vite]
-    AppUI[App.tsx UI]
-    Poller[Health + Jobs Polling]
-    QueueView[Queue + Progress UI]
+  subgraph FE["Frontend - React + TypeScript + Vite"]
+    AppUI["App.tsx UI"]
+    Poller["Health + Jobs Polling"]
+    QueueView["Queue + Progress UI"]
   end
 
-  subgraph API[Backend - FastAPI]
-    Main[main.py]
-    H1[GET /health]
-    H2[POST /jobs/transcribe]
-    H3[POST /jobs/transcribe-collection]
-    H4[GET /jobs]
+  subgraph API["Backend - FastAPI"]
+    Main["main.py"]
+    H1["GET /health"]
+    H2["POST /jobs/transcribe"]
+    H3["POST /jobs/transcribe-collection"]
+    H4["GET /jobs"]
     H5["GET /jobs/{job_id}"]
     H6["DELETE /jobs/{job_id}"]
   end
 
-  subgraph CORE[Service Layer - TranscriptionService]
-    Discover[discover_videos]
-    Enqueue[enqueue_collection_jobs]
+  subgraph CORE["Service Layer - TranscriptionService"]
+    Discover["discover_videos"]
+    Enqueue["enqueue_collection_jobs"]
     WorkerQ[(In-memory Queue)]
-    Worker[Background Worker Thread]
-    RunJob[_run_job]
-    Audio[ffmpeg audio extraction]
+    Worker["Background Worker Thread"]
+    RunJob["_run_job"]
+    Audio["ffmpeg audio extraction"]
     ProviderChain["Provider chain resolver\nlocal | openai | auto"]
     Preflight["Provider preflight\n(binary/model/key checks)"]
     Meta[(metadata.json per job)]
   end
 
-  subgraph Providers[Transcription Providers]
+  subgraph Providers["Transcription Providers"]
     Local["LocalWhisperCppProvider\nwhisper-cli + ggml model"]
     OpenAI["OpenAIWhisperProvider\nOpenAI API"]
   end
 
-  subgraph Storage[Runtime Data Root (outside repo)]
+  subgraph Storage["Runtime Data Root (outside repo)"]
     JobsDir["jobs/<job_id>/"]
-    MetaFile[metadata.json]
-    AudioWav[audio.wav]
-    Transcript[transcript.txt]
+    MetaFile["metadata.json"]
+    AudioWav["audio.wav"]
+    Transcript["transcript.txt"]
   end
 
-  subgraph Config[Configuration]
-    Settings[config/settings.toml]
-    Secrets[config/secrets.env]
+  subgraph Config["Configuration"]
+    Settings["config/settings.toml"]
+    Secrets["config/secrets.env"]
   end
 
   User --> AppUI
@@ -100,12 +100,12 @@ flowchart TB
   Main --> H6
 
   %% Job lifecycle states
-  subgraph Lifecycle[Job Lifecycle]
-    Q[queued\n0%]
-    P[processing\n10% -> 40% -> 100%]
-    C[completed]
-    F[failed]
-    X[canceled]
+  subgraph Lifecycle["Job Lifecycle"]
+    Q["queued\n0%"]
+    P["processing\n10% -> 40% -> 100%"]
+    C["completed"]
+    F["failed"]
+    X["canceled"]
   end
 
   Enqueue --> Q
